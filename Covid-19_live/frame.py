@@ -8,10 +8,17 @@ root.title("Today Covid-19 Live")
 root.geometry("400x150")
 # root.configure(bg="#856ff8")
 
-# 확진자 수 프레임
+# 어제 확진자 수 프레임
+yesterday_frame = LabelFrame(root, text="어제 확진자 수")
+yesterday_frame.pack()
+y_font = tkFont.Font(family="Arial", size=10)
+yesterday_number_label = Label(yesterday_frame, width = 10, text="{}".format(yesterday_number), font=y_font, bg="white", fg="blue")
+yesterday_number_label.pack()
+
+# 실시간 확진자 수 프레임
 number = 0
 
-number_frame = LabelFrame(root, text="확진자 수")
+number_frame = LabelFrame(root, text="실시간 확진자 수")
 number_frame.pack()
 fontStyle = tkFont.Font(family="Arial", size=30)
 number_label = Label(number_frame, width = 10, text="{}".format(number), font=fontStyle, bg="white", fg="red")
