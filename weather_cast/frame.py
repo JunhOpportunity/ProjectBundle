@@ -21,7 +21,7 @@ now_frame = LabelFrame(today_frame, text="LIVE")
 now_frame.pack(side="left")
 tem_now = 0
 temperture_font = tkFont.Font(family="", size=20)
-temperture_now = Label(now_frame, text="{}ºC".format(tem_now), bg="white", fg="blue",font=temperture_font)
+temperture_now = Label(now_frame, text="{}".format(tem_now), bg="white", fg="blue",font=temperture_font)
 temperture_now.pack(padx=5, pady=5)
 
 # 오늘 최고 온도 & 최저 온도 & 오전 구름 & 오후 구름
