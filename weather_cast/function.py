@@ -1,5 +1,4 @@
 import requests
-from selenium import webdriver
 from bs4 import BeautifulSoup
 import time
 
@@ -21,10 +20,11 @@ print(today_highest_temp, today_lowest_temp)
 
 # 오늘 오전 오후 구름 양
 today_am_cloud = soup.find("span", attrs={"class":"rainfall"})
-
+# today_am_next = today_am_cloud.next_element
 print(today_am_cloud.get_text())
+# print(today_am_next.get_text())
 
 cloud_list = soup.find_all("div", attrs={"class":"rainfall"})
-# with open("listFile.html", "w", encoding="utf8") as f:  # 내가 원하는 종류의 새로운 파일 생성
-#     f.write(cloud_list.text)
+# print(cloud_list[1].get_text())
+
 
