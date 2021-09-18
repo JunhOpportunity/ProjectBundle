@@ -1,7 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
 import time
-
 import tkinter.messagebox as msgbox
 import tkinter.ttk as ttk
 from tkinter import *
@@ -14,6 +13,10 @@ res = requests.get(url)
 res.raise_for_status()
 soup = BeautifulSoup(res.text, "lxml")
 
+# 내일, 내일모레 최고 온도&최저 온도
+temp_high_list = soup.find_all("span", class_="highest")
+temp_low_list = soup.find_all("span", class_="lowest")
+
 # 현재 온도
 live_temp = soup.find("div", attrs={"class":"temperature_text"}).get_text().replace("현재 온도", "") # replace를 통해 제거하고싶은 내용 제거
 print(live_temp)
@@ -24,21 +27,25 @@ today_highest_temp = soup.find("span", attrs={"class":"highest"}).get_text().rep
 print(today_highest_temp, today_lowest_temp)
 
 # 오늘 오전 오후 구름 양
-today_am_cloud = soup.find("span", attrs={"class":"rainfall"})
+cloud_list = soup.find_all("span", class_="rainfall")
+today_am_c = cloud_list[0].text
+today_pm_c = cloud_list[1].text
+tomorrow_am_c = cloud_list[2].text
+tomorrow_pm_c = cloud_list[3].text
+aft_tomorrow_am_c = cloud_list[4].text
+aft_tomorrow_pm_c = cloud_list[5].text
 
-print(today_am_cloud.get_text())
-
-cloud_list = soup.find_all("div", attrs={"class":"rainfall"})
-# with open("listFile.html", "w", encoding="utf8") as f:  # 내가 원하는 종류의 새로운 파일 생성
-#     f.write(cloud_list.text)
-
+# 새로고침 버튼 함수
+def refresh():
+    new_live_temp = soup.find("div", attrs={"class":"temperature_text"}).get_text().replace("현재 온도", "")
+    temperture_now.config(text="{}".format(new_live_temp))
 
 ####################################################################
 
 
 root = Tk()
 root.title("Weather Cast!")
-root.geometry("320x300")
+root.geometry("320x310")
 
 # # 맨 위 타이틀 만들기
 # title_font = tkFont.Font(size=20)
@@ -60,29 +67,30 @@ temperture_now.pack(padx=5, pady=5)
 # 오늘 최고 온도 & 최저 온도 & 오전 구름 & 오후 구름
 today_max_tem = today_highest_temp
 today_min_tem = today_lowest_temp
-today_am_cloud = 0
-today_pm_cloud = 0
+today_am_cloud = today_am_c
+today_pm_cloud = today_pm_c
 # 온도
 today_etc_frame = LabelFrame(today_frame, text="ETC")
 today_etc_frame.pack(side="right")
-max_min_tem_label = Label(today_etc_frame, text="Temperture MAX : {}ºC | MIN : {}ºC".format(today_max_tem, today_min_tem))
+max_min_tem_label = Label(today_etc_frame, text="Temperture MIN : {}ºC | MAX : {}ºC".format(today_min_tem, today_max_tem))
 # 구름
-cloud_label = Label(today_etc_frame, text="Cloud AM : {}% | PM : {}%".format(today_am_cloud, today_pm_cloud))
+cloud_label = Label(today_etc_frame, text="Cloud AM : {} | PM : {}".format(today_am_cloud, today_pm_cloud))
 
 max_min_tem_label.pack(padx=5)
 cloud_label.pack(padx=5)
 
 # 달 관측 가능한가?
-if (today_pm_cloud <= 30):
+today_pm_c_m = today_pm_c[:2]
+if (int(today_pm_c_m) <= 30):
     moon_answer_icon = "◎"
-elif (today_pm_cloud > 30 & today_pm_cloud <=60):
+elif (int(today_pm_c_m) & int(today_pm_c_m) <=60):
     moon_answer_icon = "△"
-elif (today_pm_cloud > 60):
+elif (int(today_pm_c_m) > 60):
     moon_answer_icon = "Ｘ"
 
 moon_frame = LabelFrame(root, text="Can We Observe the Moon?")
 moon_frame.pack(pady=10)
-moon_answer = Label(moon_frame, text="Answer : {}(◎/△/Ｘ)".format(moon_answer_icon))
+moon_answer = Label(moon_frame, text="Answer : {}  (◎/△/Ｘ)".format(moon_answer_icon))
 moon_answer.pack(padx=76)
 
 # 날씨 요약
@@ -91,39 +99,41 @@ summery_frame.pack(pady=10)
 # 오늘
 summery_today_w_frame = LabelFrame(summery_frame, text="Today")
 summery_today_w_frame.pack(side="left")
-s_t_am_c = Label(summery_today_w_frame, text="Am Cloud : {}%".format(today_am_cloud))
-s_t_pm_c = Label(summery_today_w_frame, text="Pm Cloud : {}%".format(today_pm_cloud))
+s_t_am_c = Label(summery_today_w_frame, text="Am Cloud : {}".format(today_am_cloud))
+s_t_pm_c = Label(summery_today_w_frame, text="Pm Cloud : {}".format(today_pm_cloud))
 s_t_t = Label(summery_today_w_frame, text="{}ºC/{}ºC".format(today_min_tem, today_max_tem))
 s_t_am_c.pack()
 s_t_pm_c.pack()
 s_t_t.pack()
 # 내일
-tomorrow_am_cloud = 1
-tomorrow_pm_cloud = 1
-tom_min_tem = 1
-tom_max_tem = 1
+tomorrow_am_cloud = tomorrow_am_c
+tomorrow_pm_cloud = tomorrow_pm_c
+tom_min_tem = temp_low_list[1].text.replace("최저기온", "")
+tom_max_tem = temp_high_list[1].text.replace("최고기온", "")
 summery_tomorrow_w_frame = LabelFrame(summery_frame, text="Tomorrow")
 summery_tomorrow_w_frame.pack(side="left")
-s_tom_am_c = Label(summery_tomorrow_w_frame, text="Am Cloud : {}%".format(tomorrow_am_cloud))
-s_tom_pm_c = Label(summery_tomorrow_w_frame, text="Pm Cloud : {}%".format(tomorrow_pm_cloud))
+s_tom_am_c = Label(summery_tomorrow_w_frame, text="Am Cloud : {}".format(tomorrow_am_cloud))
+s_tom_pm_c = Label(summery_tomorrow_w_frame, text="Pm Cloud : {}".format(tomorrow_pm_cloud))
 s_tom_t = Label(summery_tomorrow_w_frame, text="{}ºC/{}ºC".format(tom_min_tem, tom_max_tem))
 s_tom_am_c.pack()
 s_tom_pm_c.pack()
 s_tom_t.pack()
 #모레
-aft_tomorrow_am_cloud = 2
-aft_tomorrow_pm_cloud = 2
-aft_tom_min_tem = 2
-aft_tom_max_tem = 2
+aft_tomorrow_am_cloud = aft_tomorrow_am_c
+aft_tomorrow_pm_cloud = aft_tomorrow_pm_c
+aft_tom_min_tem = temp_low_list[2].text.replace("최저기온", "")
+aft_tom_max_tem = temp_high_list[2].text.replace("최고기온", "")
 summery_aft_tomorrow_w_frame = LabelFrame(summery_frame, text="After Tomorrow")
 summery_aft_tomorrow_w_frame.pack(side="left")
-s_a_t_am_c = Label(summery_aft_tomorrow_w_frame, text="Am Cloud : {}%".format(aft_tomorrow_am_cloud))
-s_a_t_pm_c = Label(summery_aft_tomorrow_w_frame, text="Pm Cloud : {}%".format(aft_tomorrow_pm_cloud))
+s_a_t_am_c = Label(summery_aft_tomorrow_w_frame, text="Am Cloud : {}".format(aft_tomorrow_am_cloud))
+s_a_t_pm_c = Label(summery_aft_tomorrow_w_frame, text="Pm Cloud : {}".format(aft_tomorrow_pm_cloud))
 s_a_t_t = Label(summery_aft_tomorrow_w_frame, text="{}ºC/{}ºC".format(aft_tom_min_tem, aft_tom_max_tem))
 s_a_t_am_c.pack()
 s_a_t_pm_c.pack()
 s_a_t_t.pack()
 
+refresh_button = Button(root, text="Refresh", command=refresh, bg="cornflowerblue")
+refresh_button.pack()
 
 root.resizable(False, False)
 root.mainloop()
