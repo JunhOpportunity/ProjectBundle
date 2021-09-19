@@ -19,12 +19,12 @@ temp_low_list = soup.find_all("span", class_="lowest")
 
 # 현재 온도
 live_temp = soup.find("div", attrs={"class":"temperature_text"}).get_text().replace("현재 온도", "") # replace를 통해 제거하고싶은 내용 제거
-print(live_temp)
+
 
 # 오늘 최고온도 최저온도
 today_lowest_temp = soup.find("span", attrs={"class":"lowest"}).get_text().replace("최저기온","")
 today_highest_temp = soup.find("span", attrs={"class":"highest"}).get_text().replace("최고기온","")
-print(today_highest_temp, today_lowest_temp)
+
 
 # 오늘 오전 오후 구름 양
 cloud_list = soup.find_all("span", class_="rainfall")
@@ -39,6 +39,7 @@ aft_tomorrow_pm_c = cloud_list[5].text
 def refresh():
     new_live_temp = soup.find("div", attrs={"class":"temperature_text"}).get_text().replace("현재 온도", "")
     temperture_now.config(text="{}".format(new_live_temp))
+    print("새로고침")
 
 ####################################################################
 
