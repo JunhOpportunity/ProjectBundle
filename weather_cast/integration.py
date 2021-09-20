@@ -37,6 +37,8 @@ aft_tomorrow_pm_c = cloud_list[5].text
 
 # 새로고침 버튼 함수
 def refresh():
+    res = requests.get(url)
+    soup = BeautifulSoup(res.text, "lxml")
     new_live_temp = soup.find("div", attrs={"class":"temperature_text"}).get_text().replace("현재 온도", "")
     temperture_now.config(text="{}".format(new_live_temp))
     print("새로고침")
