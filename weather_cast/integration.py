@@ -83,12 +83,17 @@ max_min_tem_label.pack(padx=5)
 cloud_label.pack(padx=5)
 
 # 달 관측 가능한가?
+# 9/22 today_pm_c_m 은 today_pm_c를 인덱스 0부터 1까지 자른 것인데, today_pm_c이 0% 또는 100%가 나올 경우 오류가 발생하기 때문에 코드를 수정하였다.
 today_pm_c_m = today_pm_c[:2]
-if (int(today_pm_c_m) <= 30):
+if (today_pm_c == "0%"):
+    moon_answer_icon = "◎"
+elif(today_pm_c == "100%" ):
+    moon_answer_icon = "Ｘ"
+elif(int(today_pm_c_m) <= 30 ):
     moon_answer_icon = "◎"
 elif (int(today_pm_c_m) & int(today_pm_c_m) <=60):
     moon_answer_icon = "△"
-elif (int(today_pm_c_m) > 60):
+elif (int(today_pm_c_m) > 60 ):
     moon_answer_icon = "Ｘ"
 
 moon_frame = LabelFrame(root, text="Can We Observe the Moon?")
