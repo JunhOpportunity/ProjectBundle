@@ -103,6 +103,9 @@ body > .info {
 .info .metadata .titleAndButton .moreBtn {
     height: 100%;
 }
+.info .metadata .titleAndButton .moreBtnM {
+    display: flex;
+}
 /* 30:30 까지 했는데, moreBtn이 span 옆에 안붙고 개행되어버림. 이거 어떻게 해결? */
 .info .views {
     font-size: var(--font-small);
@@ -117,7 +120,7 @@ body > .info {
     margin: var(--padding) 0;
 }
 
-.action button {
+.actions button {
     display: flex;
     flex-direction: column;
     font-size: var(--font-small);

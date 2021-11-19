@@ -25,7 +25,7 @@ i {
     margin-top: 10px;
     margin-left: 10px;
     font-size: 20px;
-    float: left;
+    float: left; /* float 아예 안씀 -> 그럼 보통 언제 사용?? */
     display: inline-block;
     color: white;
     
