@@ -1,0 +1,117 @@
+/* Var */
+:root {
+    /* Color */
+    --color-gray: #546e7a;
+    --color-light-gray: #819ca9;
+    --color-dark-gray: #29434e;
+    --color-deep-gray: #37474f;
+    --color-white: #ffffff;
+    --color-highlight: #E55C1C;
+    --color-yellow: #FFFF00;
+
+    /* Font size */
+    --font-large: 48px;
+    --font-medium: 28px;
+    --font-regular: 18px;
+    --font-small: 16px;
+    --font-micro: 14px;
+
+    /* Font weight */
+    --weight-bold: 700;
+    --weight-semi-bold: 600;
+    --weight-regular: 400;
+
+
+}
+
+/* Univalsial */
+* {
+    box-sizing: border-box;
+}
+
+body {
+
+}
+
+a {
+    text-decoration: none;
+    color: var(--color-white);
+}
+
+button {
+
+}
+
+
+
+
+
+
+
+
+/* Typography */
+h1 {
+    
+}
+
+/* Section */
+.section {
+    padding: 30px;
+    text-align: center;
+    margin: auto;
+}
+
+.section__container {
+    max-width: 1200px;
+    margin: auto;
+}
+
+
+/*  */
+#navbar {
+    width: 100%;
+    border-radius: 2rem;
+    position: fixed;
+    background-color: var(--color-gray);
+    text-align: center;
+    top: 0;
+    padding: 10px 0px;
+}
+
+.nav__logo {  
+    font-size: var(--font-medium);
+    color: var(--color-yellow);
+}
+
+#information {  /* Navbar때문에 가려져서 아래로 내리기 */
+    margin-top: 100px;
+    text-align: center;
+}
+#information h1:after { /* 제목 아래에 밑줄 추가하기 */
+    content: '';
+    position: relative;
+    display: block;
+    width: 150px;
+    height: 2px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 5px;
+    background-color: var(--color-gray);
+}
+
+#moonCards {
+    display: flex;
+    justify-content: space-between;
+    margin: 50px 0;
+}
+
+.moonCard {
+    
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    height: 300px;
+    margin: 2px;
+    background-color: var(--color-white);
+}
